@@ -17,20 +17,27 @@
 #define NUM_THREADS 2
 
 int i;
+static pthread_mutex_t mtx = PTHREAD_MUTEX_INITIALIZER;
 
 void *foo (void *bar)
 {
     pthread_t *me = new pthread_t (pthread_self());
-    printf("in a foo thread, ID %ld\n", *me);
+    printf("in a foo thread, ID %ld\n", (long)*me);
+
+    int locking;
 
     for (i = 0; i < *((int *) bar); i++)
     {
+        locking = pthread_mutex_lock(&mtx);
+    
         int tmp = i;
 
         if (tmp != i)
         {
             printf ("aargh: %d != %d\n", tmp, i);
         }
+
+        locking = pthread_mutex_unlock(&mtx);
     }
 
     pthread_exit (me);
@@ -40,6 +47,7 @@ int main(int argc, char **argv)
 {
     int iterations = strtol(argv[1], NULL, 10);
     pthread_t threads[NUM_THREADS];
+
 
     for (int i = 0; i < NUM_THREADS; i++)
     {
@@ -58,7 +66,7 @@ int main(int argc, char **argv)
             perror ("pthread_join");
             return (1);
         }
-        printf("joined a foo thread, number %ld\n", *((pthread_t *) status));
+        printf("joined a foo thread, number %ld\n", (long)*((pthread_t *) status));
     }
 
     return (0);
