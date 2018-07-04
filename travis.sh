@@ -2,8 +2,8 @@
 echo
 echo
 echo
-echo "Running 'g++ -Wall -lpthreads Race.cc'"
-echo `g++ -Wall -lpthreads Race.cc`
+echo "Running 'g++ -Wall -pthreads -lpthreads Race.cc'"
+echo `g++ -Wall -pthreads -lpthreads Race.cc`
 echo
 echo
 echo "Running valgrind on Race.cc with 1000000 as argument"
