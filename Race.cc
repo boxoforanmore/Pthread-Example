@@ -38,7 +38,7 @@ void *foo (void *bar)
     }
     pthread_mutex_unlock(&mtx);
 
-    pthread_exit (pthread_self());
+    pthread_exit ((void *) pthread_self());
 }
 
 int main(int argc, char **argv)
