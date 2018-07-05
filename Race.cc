@@ -24,12 +24,10 @@ void *foo (void *bar)
     pthread_t *me = new pthread_t (pthread_self());
     printf("in a foo thread, ID %ld\n", (long)*me);
 
-    int locking;
+    pthread_mutex_lock(&mtx);
 
     for (i = 0; i < *((int *) bar); i++)
     {
-        locking = pthread_mutex_lock(&mtx);
-    
         int tmp = i;
 
         if (tmp != i)
@@ -37,8 +35,8 @@ void *foo (void *bar)
             printf ("aargh: %d != %d\n", tmp, i);
         }
 
-        locking = pthread_mutex_unlock(&mtx);
     }
+    pthread_mutex_unlock(&mtx);
 
     pthread_exit (me);
 }
