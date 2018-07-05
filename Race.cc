@@ -21,8 +21,8 @@ static pthread_mutex_t mtx = PTHREAD_MUTEX_INITIALIZER;
 
 void *foo (void *bar)
 {
-    pthread_t *me = new pthread_t (pthread_self());
-    printf("in a foo thread, ID %ld\n", (long)*me);
+    //pthread_t *me = new pthread_t (pthread_self());
+    printf("in a foo thread, ID %ld\n", (long)pthread_self());
 
     pthread_mutex_lock(&mtx);
 
@@ -38,7 +38,7 @@ void *foo (void *bar)
     }
     pthread_mutex_unlock(&mtx);
 
-    pthread_exit (me);
+    pthread_exit (pthread_self());
 }
 
 int main(int argc, char **argv)
@@ -64,7 +64,7 @@ int main(int argc, char **argv)
             perror ("pthread_join");
             return (1);
         }
-        printf("joined a foo thread, number %ld\n", (long)*((pthread_t *) status));
+        printf("joined a foo thread, number %ld\n", (long) status);
     }
 
     return (0);
